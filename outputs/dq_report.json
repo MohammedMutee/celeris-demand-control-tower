@@ -1,0 +1,1492 @@
+{
+  "run_id": "20261122-191216",
+  "generated_at": "2026-11-22T13:42:28+00:00",
+  "n_rules_triggered": 43,
+  "files": {
+    "inventory_stockouts.csv": {
+      "rows_in": 5830,
+      "before": {
+        "rows": 5830,
+        "nulls": {},
+        "distinct": {
+          "Date": 94,
+          "SKU_ID": 520,
+          "Region": 6,
+          "Reason": 5
+        }
+      },
+      "rows_out": 5830,
+      "reconciliation": {
+        "rows": 5830,
+        "shipped_eq_raw_units": 5652,
+        "shipped_eq_clean_units": 5829,
+        "no_train_row_restored": 26
+      }
+    },
+    "train.csv": {
+      "rows_in": 248248,
+      "before": {
+        "rows": 248248,
+        "nulls": {
+          "Product_Family": 1252,
+          "SKU_Description": 996,
+          "Region": 952,
+          "Units_Sold": 3362,
+          "Revenue_USD": 383
+        },
+        "distinct": {
+          "Date": 667,
+          "Year": 8,
+          "Month": 12,
+          "Product_Family": 7,
+          "Business_Unit": 5,
+          "SKU_ID": 2659,
+          "SKU_Description": 598,
+          "Customer_Name": 220,
+          "Sales_Channel": 17,
+          "Region": 29,
+          "Units_Sold": 907
+        }
+      },
+      "rows_out": 245522,
+      "after": {
+        "rows": 245522,
+        "nulls": {
+          "units": 1310,
+          "revenue": 1310,
+          "Record_ID": 956,
+          "units_in": 4500,
+          "price_in": 956,
+          "rev_in": 1336
+        },
+        "distinct": {
+          "date": 94,
+          "family": 7,
+          "bu": 5,
+          "sku": 598,
+          "description": 598,
+          "customer": 12,
+          "channel": 4,
+          "region": 6,
+          "row_status": 3
+        }
+      }
+    },
+    "test.csv": {
+      "rows_in": 58219,
+      "before": {
+        "rows": 58219,
+        "nulls": {},
+        "distinct": {
+          "Date": 19,
+          "Year": 3,
+          "Month": 12,
+          "Product_Family": 7,
+          "Business_Unit": 5,
+          "SKU_ID": 595,
+          "SKU_Description": 595,
+          "Customer_Name": 12,
+          "Sales_Channel": 4,
+          "Region": 6
+        }
+      },
+      "rows_out": 58219
+    },
+    "macro_indicators.csv": {
+      "rows_in": 114,
+      "before": {
+        "rows": 114,
+        "nulls": {
+          "Vehicle_Inventory_Days": 1,
+          "New_Vehicle_Orders_Index": 1,
+          "Industrial_Util_Rate_Pct": 1,
+          "Fuel_Price_Index": 1,
+          "EV_Adoption_Index": 1
+        },
+        "distinct": {
+          "Date": 113
+        }
+      },
+      "rows_out": 113
+    },
+    "events_calendar.csv": {
+      "rows_in": 68,
+      "rows_out": 68,
+      "event_months": 157
+    },
+    "sku_master.csv": {
+      "rows_in": 601,
+      "before": {
+        "rows": 601,
+        "nulls": {
+          "EOL_Date": 592,
+          "Replaces_SKU": 592
+        },
+        "distinct": {
+          "SKU_ID": 601,
+          "Product_Family": 7,
+          "Business_Unit": 5,
+          "SKU_Description": 601,
+          "Size_Class": 5,
+          "Powertrain_Application": 3,
+          "Launch_Date": 183,
+          "EOL_Date": 9,
+          "Replaces_SKU": 9,
+          "Lifecycle_Status": 4
+        }
+      },
+      "rows_out": 601,
+      "conflicts": 2
+    }
+  },
+  "issues": [
+    {
+      "file": "inventory_stockouts.csv",
+      "rule": "DQ-131",
+      "issue_type": "derived_field_inconsistent",
+      "column": "Fill_Rate_Pct",
+      "rows_affected": 1725,
+      "action": "recomputed as Shipped/(Requested+Carried_In)",
+      "note": "Fill_Rate_Pct is only approximate in the source (|diff| <= 2pp tolerated)",
+      "examples": [
+        {
+          "record_key": "3",
+          "before": "42.5",
+          "after": "38.9"
+        },
+        {
+          "record_key": "5",
+          "before": "53.4",
+          "after": "51.2"
+        },
+        {
+          "record_key": "17",
+          "before": "66.1",
+          "after": "62.5"
+        },
+        {
+          "record_key": "19",
+          "before": "46.1",
+          "after": "38.5"
+        },
+        {
+          "record_key": "22",
+          "before": "57.8",
+          "after": "55.0"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-010",
+      "issue_type": "date_format",
+      "column": "Date",
+      "rows_affected": 9967,
+      "action": "parsed_to_YYYY-MM",
+      "note": "7 formats seen: YYYY-MM, YYYY-MM-DD, MM/YYYY, YYYY/MM, Mon YYYY, Mon-YYYY, MM-YYYY",
+      "examples": [
+        {
+          "record_key": "CEL-0224986",
+          "before": "2019-01-01",
+          "after": "2019-01"
+        },
+        {
+          "record_key": "CEL-0168363",
+          "before": "01/2019",
+          "after": "2019-01"
+        },
+        {
+          "record_key": "CEL-0104806",
+          "before": "01/2019",
+          "after": "2019-01"
+        },
+        {
+          "record_key": "CEL-0003451",
+          "before": "2019/01",
+          "after": "2019-01"
+        },
+        {
+          "record_key": "CEL-0074081",
+          "before": "2019-01-01",
+          "after": "2019-01"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-011",
+      "issue_type": "date_out_of_range",
+      "column": "Date",
+      "rows_affected": 30,
+      "action": "replaced_by_load_timestamp_month_minus_1",
+      "note": "Typo years such as 2062-01 (should be 2026-01); Year/Month and Load_Timestamp agree",
+      "examples": [
+        {
+          "record_key": "CEL-0207046",
+          "before": "2062-01",
+          "after": "2026-01"
+        },
+        {
+          "record_key": "CEL-0243867",
+          "before": "2062-01",
+          "after": "2026-01"
+        },
+        {
+          "record_key": "CEL-0104515",
+          "before": "2062-02",
+          "after": "2026-02"
+        },
+        {
+          "record_key": "CEL-0036690",
+          "before": "2062-02",
+          "after": "2026-02"
+        },
+        {
+          "record_key": "CEL-0110229",
+          "before": "2062-02",
+          "after": "2026-02"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-012",
+      "issue_type": "year_month_mismatch",
+      "column": "Year/Month",
+      "rows_affected": 246,
+      "action": "rebuilt_from_Date (rule 1)",
+      "note": "Load_Timestamp confirms Date in 100 % of these rows",
+      "examples": [
+        {
+          "record_key": "CEL-0045443",
+          "before": "2019-02",
+          "after": "2019-01"
+        },
+        {
+          "record_key": "CEL-0099411",
+          "before": "2019-02",
+          "after": "2019-01"
+        },
+        {
+          "record_key": "CEL-0112351",
+          "before": "2019-03",
+          "after": "2019-02"
+        },
+        {
+          "record_key": "CEL-0233623",
+          "before": "2019-03",
+          "after": "2019-02"
+        },
+        {
+          "record_key": "CEL-0032570",
+          "before": "2019-03",
+          "after": "2019-02"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-020",
+      "issue_type": "sku_format",
+      "column": "SKU_ID",
+      "rows_affected": 3741,
+      "action": "normalised_to_AAA-NNN",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0216906",
+          "before": "THM008",
+          "after": "THM-008"
+        },
+        {
+          "record_key": "CEL-0163761",
+          "before": "PMP-55",
+          "after": "PMP-055"
+        },
+        {
+          "record_key": "CEL-0015807",
+          "before": "BSS-38",
+          "after": "BSS-038"
+        },
+        {
+          "record_key": "CEL-0191547",
+          "before": "PTC-32",
+          "after": "PTC-032"
+        },
+        {
+          "record_key": "CEL-0106014",
+          "before": "HYD_006",
+          "after": "HYD-006"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-021",
+      "issue_type": "label_variant",
+      "column": "Region",
+      "rows_affected": 5992,
+      "action": "mapped_to_canonical",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0004601",
+          "before": "Latin-America",
+          "after": "Latin America"
+        },
+        {
+          "record_key": "CEL-0076621",
+          "before": "Asia Pacific ",
+          "after": "Asia Pacific"
+        },
+        {
+          "record_key": "CEL-0017543",
+          "before": "India ",
+          "after": "India"
+        },
+        {
+          "record_key": "CEL-0143378",
+          "before": "Asia-Pacific",
+          "after": "Asia Pacific"
+        },
+        {
+          "record_key": "CEL-0172931",
+          "before": "LatAm",
+          "after": "Latin America"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-023",
+      "issue_type": "label_variant",
+      "column": "Sales_Channel",
+      "rows_affected": 3745,
+      "action": "mapped_to_canonical",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0179655",
+          "before": "direct oem",
+          "after": "Direct OEM"
+        },
+        {
+          "record_key": "CEL-0020555",
+          "before": "direct oem",
+          "after": "Direct OEM"
+        },
+        {
+          "record_key": "CEL-0176921",
+          "before": "T1 Distributor",
+          "after": "Tier-1 Distributor"
+        },
+        {
+          "record_key": "CEL-0194604",
+          "before": "direct oem",
+          "after": "Direct OEM"
+        },
+        {
+          "record_key": "CEL-0123962",
+          "before": "OEM Direct",
+          "after": "Direct OEM"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-024",
+      "issue_type": "label_variant",
+      "column": "Customer_Name",
+      "rows_affected": 2490,
+      "action": "fuzzy_matched_to_12_canonical",
+      "note": "typos, case, double spaces, missing spaces, 'Inc.' suffix",
+      "examples": [
+        {
+          "record_key": "CEL-0158081",
+          "before": "Orion Drivline",
+          "after": "Orion Driveline"
+        },
+        {
+          "record_key": "CEL-0099223",
+          "before": "NEXON MOTOR GROUP",
+          "after": "Nexon Motor Group"
+        },
+        {
+          "record_key": "CEL-0200952",
+          "before": "Vantara Auto Inc.",
+          "after": "Vantara Auto"
+        },
+        {
+          "record_key": "CEL-0197450",
+          "before": "QUANTUM DRIVE SYSTEMS",
+          "after": "Quantum Drive Systems"
+        },
+        {
+          "record_key": "CEL-0075759",
+          "before": "ORION DRIVELINE",
+          "after": "Orion Driveline"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-025",
+      "issue_type": "missing_value",
+      "column": "Product_Family",
+      "rows_affected": 1252,
+      "action": "filled_from_sku_master",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0020555",
+          "before": "",
+          "after": "Brake & Safety Systems"
+        },
+        {
+          "record_key": "CEL-0178353",
+          "before": "",
+          "after": "Powertrain Components"
+        },
+        {
+          "record_key": "CEL-0202348",
+          "before": "",
+          "after": "Powertrain Components"
+        },
+        {
+          "record_key": "CEL-0160137",
+          "before": "",
+          "after": "Precision Machined Parts"
+        },
+        {
+          "record_key": "CEL-0121322",
+          "before": "",
+          "after": "Hydraulic Systems"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-026",
+      "issue_type": "missing_value",
+      "column": "SKU_Description",
+      "rows_affected": 996,
+      "action": "filled_from_sku_master",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0087515",
+          "before": "",
+          "after": "Standard 25 mm Alternator Regulator"
+        },
+        {
+          "record_key": "CEL-0076041",
+          "before": "",
+          "after": "Industrial 100 mm Power Distribution Module"
+        },
+        {
+          "record_key": "CEL-0188479",
+          "before": "",
+          "after": "Standard 25 mm Axle Gear Module"
+        },
+        {
+          "record_key": "CEL-0189747",
+          "before": "",
+          "after": "Heavy-Duty 70 mm Manual Gearbox Synchro Set"
+        },
+        {
+          "record_key": "CEL-0191359",
+          "before": "",
+          "after": "Heavy-Duty 70 mm Clutch Carrier Assembly"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-030",
+      "issue_type": "duplicate_record_exact",
+      "column": "Record_ID",
+      "rows_affected": 2946,
+      "action": "dropped_reloaded_copy",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0030023",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0033495",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0107974",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0130209",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0226946",
+          "before": "",
+          "after": ""
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-031",
+      "issue_type": "duplicate_record_restated",
+      "column": "Record_ID",
+      "rows_affected": 736,
+      "action": "kept_latest_Load_Timestamp (rule 2)",
+      "note": "Same record re-loaded with corrected Units/Revenue",
+      "examples": [
+        {
+          "record_key": "CEL-0230360",
+          "before": "119",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0028533",
+          "before": "53",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0076621",
+          "before": "44",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0184595",
+          "before": "55",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0127287",
+          "before": "44",
+          "after": ""
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-022",
+      "issue_type": "missing_value",
+      "column": "Region",
+      "rows_affected": 942,
+      "action": "inferred_from_sku_month_gap_and_customer_channel",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0186613",
+          "before": "",
+          "after": "Europe"
+        },
+        {
+          "record_key": "CEL-0058508",
+          "before": "",
+          "after": "India"
+        },
+        {
+          "record_key": "CEL-0107070",
+          "before": "",
+          "after": "North America"
+        },
+        {
+          "record_key": "CEL-0144364",
+          "before": "",
+          "after": "Asia Pacific"
+        },
+        {
+          "record_key": "CEL-0164419",
+          "before": "",
+          "after": "North America"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-040",
+      "issue_type": "number_format",
+      "column": "Units_Sold",
+      "rows_affected": 44,
+      "action": "removed_thousands_separator",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0030551",
+          "before": "9,600",
+          "after": "9600.0"
+        },
+        {
+          "record_key": "CEL-0162840",
+          "before": "1,060",
+          "after": "1060.0"
+        },
+        {
+          "record_key": "CEL-0229596",
+          "before": "1,080",
+          "after": "1080.0"
+        },
+        {
+          "record_key": "CEL-0077207",
+          "before": "3,100",
+          "after": "3100.0"
+        },
+        {
+          "record_key": "CEL-0001692",
+          "before": "15,100",
+          "after": "15100.0"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-040b",
+      "issue_type": "missing_value",
+      "column": "Units_Sold",
+      "rows_affected": 217,
+      "action": "dash_treated_as_missing",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0131353",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0135204",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0087668",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0054346",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0079649",
+          "before": "",
+          "after": ""
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-041",
+      "issue_type": "sign_error",
+      "column": "Units_Sold",
+      "rows_affected": 491,
+      "action": "absolute_value",
+      "note": "|units|/series median ~1.0 (p10 0.57, p90 1.6); evenly spread 2019-2026",
+      "examples": [
+        {
+          "record_key": "CEL-0068562",
+          "before": "-35.0",
+          "after": "35.0"
+        },
+        {
+          "record_key": "CEL-0047001",
+          "before": "-59.0",
+          "after": "59.0"
+        },
+        {
+          "record_key": "CEL-0161439",
+          "before": "-79.0",
+          "after": "79.0"
+        },
+        {
+          "record_key": "CEL-0235054",
+          "before": "-84.0",
+          "after": "84.0"
+        },
+        {
+          "record_key": "CEL-0086795",
+          "before": "-44.0",
+          "after": "44.0"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-050",
+      "issue_type": "price_unit_error",
+      "column": "Unit_Price_USD",
+      "rows_affected": 614,
+      "action": "divided_by_100 (price keyed in cents)",
+      "note": "ratio to canonical = 100 (or 106 / 94.3 around the 2022 surcharge); revenue already correct",
+      "examples": [
+        {
+          "record_key": "CEL-0136542",
+          "before": "67308.0",
+          "after": "673.08"
+        },
+        {
+          "record_key": "CEL-0025988",
+          "before": "26173.0",
+          "after": "261.73"
+        },
+        {
+          "record_key": "CEL-0037849",
+          "before": "20146.0",
+          "after": "201.46"
+        },
+        {
+          "record_key": "CEL-0113646",
+          "before": "68443.0",
+          "after": "684.43"
+        },
+        {
+          "record_key": "CEL-0013893",
+          "before": "35946.0",
+          "after": "359.46"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-051",
+      "issue_type": "unit_of_measure_error",
+      "column": "Units_Sold/Unit_Price_USD",
+      "rows_affected": 385,
+      "action": "units x10, price /10 (booked in packs of 10); revenue unchanged",
+      "note": "India 2021-07..12 only; units ~0.1x normal and price 10x, revenue consistent",
+      "examples": [
+        {
+          "record_key": "CEL-0003481",
+          "before": "9.0",
+          "after": "90.0"
+        },
+        {
+          "record_key": "CEL-0083375",
+          "before": "2.0",
+          "after": "20.0"
+        },
+        {
+          "record_key": "CEL-0165411",
+          "before": "6.0",
+          "after": "60.0"
+        },
+        {
+          "record_key": "CEL-0127411",
+          "before": "6.0",
+          "after": "60.0"
+        },
+        {
+          "record_key": "CEL-0219256",
+          "before": "8.0",
+          "after": "80.0"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-053",
+      "issue_type": "missing_value",
+      "column": "Unit_Price_USD",
+      "rows_affected": 295,
+      "action": "price_0_on_sold_row -> canonical price",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0134488",
+          "before": "0.0",
+          "after": "559.04"
+        },
+        {
+          "record_key": "CEL-0166495",
+          "before": "0.0",
+          "after": "493.36"
+        },
+        {
+          "record_key": "CEL-0113066",
+          "before": "0.0",
+          "after": "1436.43"
+        },
+        {
+          "record_key": "CEL-0165664",
+          "before": "0.0",
+          "after": "363.29"
+        },
+        {
+          "record_key": "CEL-0083968",
+          "before": "0.0",
+          "after": "607.1"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-052",
+      "issue_type": "currency_error",
+      "column": "Unit_Price_USD/Revenue_USD",
+      "rows_affected": 498,
+      "action": "converted to USD via canonical price; revenue recomputed",
+      "note": "Europe 2022-01..03: price & revenue both x0.89 (local currency), units correct",
+      "examples": [
+        {
+          "record_key": "CEL-0040794",
+          "before": "0.89",
+          "after": "1.0"
+        },
+        {
+          "record_key": "CEL-0089099",
+          "before": "0.89",
+          "after": "1.0"
+        },
+        {
+          "record_key": "CEL-0052174",
+          "before": "0.89",
+          "after": "1.0"
+        },
+        {
+          "record_key": "CEL-0221254",
+          "before": "0.89",
+          "after": "1.0"
+        },
+        {
+          "record_key": "CEL-0241565",
+          "before": "0.89",
+          "after": "1.0"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-055a",
+      "issue_type": "unit_scale_error",
+      "column": "Units_Sold",
+      "rows_affected": 284,
+      "action": "divided_by_10",
+      "note": "units >> series level and revenue/(units*price) = 0.1",
+      "examples": [
+        {
+          "record_key": "CEL-0094177",
+          "before": "790.0",
+          "after": "79.0"
+        },
+        {
+          "record_key": "CEL-0075665",
+          "before": "190.0",
+          "after": "19.0"
+        },
+        {
+          "record_key": "CEL-0243010",
+          "before": "400.0",
+          "after": "40.0"
+        },
+        {
+          "record_key": "CEL-0026611",
+          "before": "750.0",
+          "after": "75.0"
+        },
+        {
+          "record_key": "CEL-0016093",
+          "before": "740.0",
+          "after": "74.0"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-055b",
+      "issue_type": "unit_scale_error",
+      "column": "Units_Sold",
+      "rows_affected": 74,
+      "action": "divided_by_100",
+      "note": "units >> series level and revenue/(units*price) = 0.01",
+      "examples": [
+        {
+          "record_key": "CEL-0030551",
+          "before": "9600.0",
+          "after": "96.0"
+        },
+        {
+          "record_key": "CEL-0236424",
+          "before": "8200.0",
+          "after": "82.0"
+        },
+        {
+          "record_key": "CEL-0211798",
+          "before": "4500.0",
+          "after": "45.0"
+        },
+        {
+          "record_key": "CEL-0077207",
+          "before": "3100.0",
+          "after": "31.0"
+        },
+        {
+          "record_key": "CEL-0001692",
+          "before": "15100.0",
+          "after": "151.0"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-056",
+      "issue_type": "revenue_scale_error",
+      "column": "Revenue_USD",
+      "rows_affected": 425,
+      "action": "recomputed (revenue x10, units at normal level)",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0033589",
+          "before": "256951.4",
+          "after": "25695.14"
+        },
+        {
+          "record_key": "CEL-0066791",
+          "before": "366220.3",
+          "after": "36622.03"
+        },
+        {
+          "record_key": "CEL-0231266",
+          "before": "1172034.0",
+          "after": "117203.4"
+        },
+        {
+          "record_key": "CEL-0243597",
+          "before": "461412.0",
+          "after": "46141.2"
+        },
+        {
+          "record_key": "CEL-0119270",
+          "before": "229350.7",
+          "after": "22935.07"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-057",
+      "issue_type": "units_revenue_conflict",
+      "column": "Units_Sold",
+      "rows_affected": 7,
+      "action": "units_replaced_by_revenue/price",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0200533",
+          "before": "900.0",
+          "after": "9.0"
+        },
+        {
+          "record_key": "CEL-0213574",
+          "before": "112.0",
+          "after": "108.0"
+        },
+        {
+          "record_key": "CEL-0172431",
+          "before": "76.0",
+          "after": "75.0"
+        },
+        {
+          "record_key": "CEL-0022247",
+          "before": "183.0",
+          "after": "93.0"
+        },
+        {
+          "record_key": "CEL-0109105",
+          "before": "30.0",
+          "after": "33.0"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-058",
+      "issue_type": "units_revenue_conflict",
+      "column": "Revenue_USD",
+      "rows_affected": 481,
+      "action": "revenue_recomputed_from_units",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0134488",
+          "before": "0.0",
+          "after": "30747.199999999997"
+        },
+        {
+          "record_key": "CEL-0166495",
+          "before": "0.0",
+          "after": "32561.760000000002"
+        },
+        {
+          "record_key": "CEL-0058508",
+          "before": "6792.0",
+          "after": "7691.999999999999"
+        },
+        {
+          "record_key": "CEL-0113066",
+          "before": "0.0",
+          "after": "27292.170000000002"
+        },
+        {
+          "record_key": "CEL-0165664",
+          "before": "0.0",
+          "after": "14894.890000000001"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-042",
+      "issue_type": "missing_value",
+      "column": "Units_Sold",
+      "rows_affected": 2545,
+      "action": "recovered_as_revenue/price",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0234056",
+          "before": "nan",
+          "after": "116.0"
+        },
+        {
+          "record_key": "CEL-0004847",
+          "before": "nan",
+          "after": "81.0"
+        },
+        {
+          "record_key": "CEL-0050823",
+          "before": "nan",
+          "after": "25.0"
+        },
+        {
+          "record_key": "CEL-0086701",
+          "before": "nan",
+          "after": "45.0"
+        },
+        {
+          "record_key": "CEL-0020743",
+          "before": "nan",
+          "after": "36.0"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-043",
+      "issue_type": "missing_value",
+      "column": "Units_Sold",
+      "rows_affected": 619,
+      "action": "set_to_0 (revenue = 0 -> no-order row)",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0092085",
+          "before": "nan",
+          "after": "0"
+        },
+        {
+          "record_key": "CEL-0152980",
+          "before": "nan",
+          "after": "0"
+        },
+        {
+          "record_key": "CEL-0131353",
+          "before": "-",
+          "after": "0"
+        },
+        {
+          "record_key": "CEL-0135204",
+          "before": "-",
+          "after": "0"
+        },
+        {
+          "record_key": "CEL-0041064",
+          "before": "nan",
+          "after": "0"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-044",
+      "issue_type": "missing_value_unrecoverable",
+      "column": "Units_Sold",
+      "rows_affected": 380,
+      "action": "kept_as_missing (imputed later for lags, excluded from training loss)",
+      "note": "Includes the Latin America ERP migration 2023-03..05 (EV-033)",
+      "examples": [
+        {
+          "record_key": "CEL-0117269",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0003595",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0108024",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0223792",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0174319",
+          "before": "",
+          "after": ""
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-059",
+      "issue_type": "missing_value",
+      "column": "Revenue_USD",
+      "rows_affected": 380,
+      "action": "recomputed_from_units_x_price",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "CEL-0117269",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0003595",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0108024",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0223792",
+          "before": "",
+          "after": ""
+        },
+        {
+          "record_key": "CEL-0174319",
+          "before": "",
+          "after": ""
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-060",
+      "issue_type": "missing_row",
+      "column": "(row)",
+      "rows_affected": 930,
+      "action": "added_to_grid_as_missing (data loss, not zero)",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "68",
+          "before": "2024-09|BSS-001|Asia Pacific",
+          "after": ""
+        },
+        {
+          "record_key": "70",
+          "before": "2024-11|BSS-001|Asia Pacific",
+          "after": ""
+        },
+        {
+          "record_key": "154",
+          "before": "2024-01|BSS-001|Europe",
+          "after": ""
+        },
+        {
+          "record_key": "352",
+          "before": "2024-11|BSS-001|Latin America",
+          "after": ""
+        },
+        {
+          "record_key": "431",
+          "before": "2026-08|BSS-001|Middle East & Africa",
+          "after": ""
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-061",
+      "issue_type": "missing_row",
+      "column": "(row)",
+      "rows_affected": 26,
+      "action": "restored_from_inventory_stockouts.Shipped_Units",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "23654",
+          "before": "2025-07|BSS-058|Europe",
+          "after": "39.0"
+        },
+        {
+          "record_key": "54154",
+          "before": "2024-05|CSS-048|Europe",
+          "after": "17.0"
+        },
+        {
+          "record_key": "70259",
+          "before": "2021-05|ELA-001|India",
+          "after": "24.0"
+        },
+        {
+          "record_key": "77699",
+          "before": "2022-09|ELA-019|India",
+          "after": "36.0"
+        },
+        {
+          "record_key": "81872",
+          "before": "2021-04|ELA-031|Asia Pacific",
+          "after": "46.0"
+        }
+      ]
+    },
+    {
+      "file": "train.csv",
+      "rule": "DQ-062",
+      "issue_type": "lossy_fix_refined",
+      "column": "Units_Sold",
+      "rows_affected": 36,
+      "action": "replaced x10 estimate by exact Shipped_Units from inventory_stockouts",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "72752",
+          "before": "40.0",
+          "after": "35.0"
+        },
+        {
+          "record_key": "72755",
+          "before": "70.0",
+          "after": "67.0"
+        },
+        {
+          "record_key": "76695",
+          "before": "20.0",
+          "after": "18.0"
+        },
+        {
+          "record_key": "76696",
+          "before": "20.0",
+          "after": "21.0"
+        },
+        {
+          "record_key": "76697",
+          "before": "10.0",
+          "after": "13.0"
+        }
+      ]
+    },
+    {
+      "file": "macro_indicators.csv",
+      "rule": "DQ-104",
+      "issue_type": "duplicate_month",
+      "column": "Date",
+      "rows_affected": 1,
+      "action": "kept_row_closest_to_neighbour_mean",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "2022-06",
+          "before": "",
+          "after": ""
+        }
+      ]
+    },
+    {
+      "file": "macro_indicators.csv",
+      "rule": "DQ-102",
+      "issue_type": "unit_inconsistency",
+      "column": "Auto_Production_YoY_Pct",
+      "rows_affected": 12,
+      "action": "x100 (fraction -> percent)",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "2019-01",
+          "before": "-0.015",
+          "after": "-1.5"
+        },
+        {
+          "record_key": "2019-02",
+          "before": "-0.023",
+          "after": "-2.3"
+        },
+        {
+          "record_key": "2019-03",
+          "before": "-0.032",
+          "after": "-3.2"
+        },
+        {
+          "record_key": "2019-04",
+          "before": "-0.019",
+          "after": "-1.9"
+        },
+        {
+          "record_key": "2019-05",
+          "before": "-0.014",
+          "after": "-1.4000000000000001"
+        }
+      ]
+    },
+    {
+      "file": "macro_indicators.csv",
+      "rule": "DQ-101",
+      "issue_type": "decimal_shift",
+      "column": "ISM_Manufacturing_PMI",
+      "rows_affected": 1,
+      "action": "x10",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "2023-05",
+          "before": "4.79",
+          "after": "47.9"
+        }
+      ]
+    },
+    {
+      "file": "macro_indicators.csv",
+      "rule": "DQ-100",
+      "issue_type": "missing_value",
+      "column": "Vehicle_Inventory_Days",
+      "rows_affected": 1,
+      "action": "linear_interpolation_in_time",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "2019-07",
+          "before": "",
+          "after": ""
+        }
+      ]
+    },
+    {
+      "file": "macro_indicators.csv",
+      "rule": "DQ-100",
+      "issue_type": "missing_value",
+      "column": "New_Vehicle_Orders_Index",
+      "rows_affected": 1,
+      "action": "linear_interpolation_in_time",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "2023-08",
+          "before": "",
+          "after": ""
+        }
+      ]
+    },
+    {
+      "file": "macro_indicators.csv",
+      "rule": "DQ-100",
+      "issue_type": "missing_value",
+      "column": "Industrial_Util_Rate_Pct",
+      "rows_affected": 1,
+      "action": "linear_interpolation_in_time",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "2021-02",
+          "before": "",
+          "after": ""
+        }
+      ]
+    },
+    {
+      "file": "macro_indicators.csv",
+      "rule": "DQ-100",
+      "issue_type": "missing_value",
+      "column": "Fuel_Price_Index",
+      "rows_affected": 1,
+      "action": "linear_interpolation_in_time",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "2020-09",
+          "before": "",
+          "after": ""
+        }
+      ]
+    },
+    {
+      "file": "macro_indicators.csv",
+      "rule": "DQ-100",
+      "issue_type": "missing_value",
+      "column": "EV_Adoption_Index",
+      "rows_affected": 1,
+      "action": "linear_interpolation_in_time",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "2024-11",
+          "before": "",
+          "after": ""
+        }
+      ]
+    },
+    {
+      "file": "events_calendar.csv",
+      "rule": "DQ-120",
+      "issue_type": "open_ended_event",
+      "column": "End_Date",
+      "rows_affected": 1,
+      "action": "extended_to_end_of_forecast_window",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "EV-052",
+          "before": "",
+          "after": ""
+        }
+      ]
+    },
+    {
+      "file": "sku_master.csv",
+      "rule": "DQ-110",
+      "issue_type": "hierarchy_conflict",
+      "column": "Business_Unit",
+      "rows_affected": 1,
+      "action": "transactions_use_family_BU",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "PMP-004",
+          "before": "Power & Drive Systems",
+          "after": "Advanced Manufacturing"
+        }
+      ]
+    },
+    {
+      "file": "sku_master.csv",
+      "rule": "DQ-111",
+      "issue_type": "lifecycle_conflict",
+      "column": "Launch_Date",
+      "rows_affected": 1,
+      "action": "flagged; sales kept",
+      "note": "",
+      "examples": [
+        {
+          "record_key": "BSS-018",
+          "before": "",
+          "after": ""
+        }
+      ]
+    }
+  ]
+}

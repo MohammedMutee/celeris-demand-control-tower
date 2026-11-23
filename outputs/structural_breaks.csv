@@ -1,0 +1,58 @@
+dimension,key,break_date,level_change_pct
+family,Brake & Safety Systems,2020-04,-22.0
+family,Brake & Safety Systems,2020-07,122.6
+family,Brake & Safety Systems,2022-11,15.2
+family,Chassis & Structural,2020-04,-39.3
+family,Chassis & Structural,2020-07,90.8
+family,Chassis & Structural,2020-10,46.3
+family,Chassis & Structural,2021-10,-19.8
+family,Chassis & Structural,2022-09,25.4
+family,Chassis & Structural,2024-08,12.4
+family,Electrical Assemblies,2020-04,-41.8
+family,Electrical Assemblies,2020-08,107.0
+family,Electrical Assemblies,2020-12,61.8
+family,Electrical Assemblies,2024-02,18.1
+family,Hydraulic Systems,2020-04,-37.3
+family,Hydraulic Systems,2020-07,85.7
+family,Hydraulic Systems,2020-10,57.7
+family,Hydraulic Systems,2024-06,22.8
+family,Powertrain Components,2020-04,-47.8
+family,Powertrain Components,2020-10,86.7
+family,Powertrain Components,2021-01,34.0
+family,Precision Machined Parts,2020-04,-40.0
+family,Precision Machined Parts,2020-08,98.4
+family,Precision Machined Parts,2020-11,34.7
+family,Thermal Management,2020-04,-31.1
+family,Thermal Management,2020-07,102.8
+family,Thermal Management,2020-10,47.7
+family,Thermal Management,2021-08,-22.4
+family,Thermal Management,2023-11,5.9
+region,Asia Pacific,2020-02,-22.4
+region,Asia Pacific,2020-10,44.7
+region,Europe,2020-03,-45.3
+region,Europe,2020-06,90.3
+region,Europe,2020-10,55.1
+region,India,2020-04,-54.1
+region,India,2020-07,258.6
+region,Latin America,2020-04,-37.8
+region,Latin America,2020-07,92.9
+region,Latin America,2020-10,54.7
+region,Middle East & Africa,2022-05,112.6
+region,Middle East & Africa,2022-10,50.5
+region,North America,2020-04,-41.7
+region,North America,2020-07,113.8
+region,North America,2020-10,47.6
+channel,Aftermarket,2020-04,-23.7
+channel,Aftermarket,2020-07,70.8
+channel,Aftermarket,2024-09,13.6
+channel,Direct OEM,2020-04,-38.8
+channel,Direct OEM,2020-07,92.1
+channel,Direct OEM,2020-10,55.1
+channel,Export,2020-04,-36.7
+channel,Export,2020-07,94.7
+channel,Export,2021-01,56.6
+channel,Export,2023-01,21.1
+channel,Tier-1 Distributor,2020-04,-38.4
+channel,Tier-1 Distributor,2020-07,94.8
+channel,Tier-1 Distributor,2020-10,60.4
+channel,Tier-1 Distributor,2024-01,5.2

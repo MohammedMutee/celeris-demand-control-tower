@@ -1,0 +1,40 @@
+type,sku,region,date,from_customer,to_customer,channel,rate_before,rate_after,level_change_pct,action
+customer_switch,BSS-001,Asia Pacific,2022-09,Helios Auto Parts,Crestline Manufacturing,Direct OEM,60.7,53.2,-12.4,model: series continues; level from post-switch months
+customer_switch,BSS-024,Asia Pacific,2024-04,Solaris Automotive,Meridian Assembly,Aftermarket,44.0,93.2,111.7,model: series continues; level from post-switch months
+customer_switch,BSS-081,North America,2025-01,Nexon Motor Group,Apex Tier One,Export,51.7,29.9,-42.1,model: series continues; level from post-switch months
+customer_switch,CSS-066,Latin America,2024-12,Helios Auto Parts,Apex Tier One,Aftermarket,25.4,47.2,85.9,model: series continues; level from post-switch months
+customer_switch,CSS-085,India,2022-07,Crestline Manufacturing,Helios Auto Parts,Direct OEM,26.1,23.2,-10.9,model: series continues; level from post-switch months
+customer_switch,ELA-023,Europe,2024-11,Apex Tier One,Quantum Drive Systems,Direct OEM,25.0,34.7,38.7,model: series continues; level from post-switch months
+customer_switch,ELA-063,India,2024-06,Quantum Drive Systems,Apex Tier One,Direct OEM,8.3,11.3,36.0,model: series continues; level from post-switch months
+customer_switch,HYD-001,Asia Pacific,2024-05,Meridian Assembly,Orion Driveline,Direct OEM,13.2,23.9,81.6,model: series continues; level from post-switch months
+customer_switch,HYD-009,Europe,2024-05,Nexon Motor Group,Apex Tier One,Direct OEM,43.2,35.0,-19.1,model: series continues; level from post-switch months
+customer_switch,HYD-013,North America,2022-10,Nexon Motor Group,Crestline Manufacturing,Direct OEM,42.1,22.8,-45.9,model: series continues; level from post-switch months
+customer_switch,HYD-055,Asia Pacific,2022-09,Orion Driveline,Helios Auto Parts,Tier-1 Distributor,22.9,35.9,56.7,model: series continues; level from post-switch months
+customer_switch,HYD-059,India,2024-10,Crestline Manufacturing,Vantara Auto,Aftermarket,14.7,31.5,114.8,model: series continues; level from post-switch months
+customer_switch,PMP-015,Europe,2025-04,Crestline Manufacturing,Apex Tier One,Export,83.5,58.0,-30.5,model: series continues; level from post-switch months
+customer_switch,PMP-032,Europe,2023-09,Solaris Automotive,Quantum Drive Systems,Direct OEM,53.9,66.9,24.1,model: series continues; level from post-switch months
+customer_switch,PMP-047,North America,2023-01,Vantara Auto,Solaris Automotive,Tier-1 Distributor,101.2,53.0,-47.6,model: series continues; level from post-switch months
+customer_switch,PMP-074,Latin America,2023-12,Orion Driveline,Apex Tier One,Direct OEM,38.0,52.3,37.7,model: series continues; level from post-switch months
+customer_switch,PTC-034,India,2024-05,Nexon Motor Group,Meridian Assembly,Direct OEM,63.8,52.4,-17.8,model: series continues; level from post-switch months
+customer_switch,PTC-050,Europe,2025-05,Helios Auto Parts,Quantum Drive Systems,Direct OEM,40.0,24.7,-38.3,model: series continues; level from post-switch months
+customer_switch,THM-003,Latin America,2025-01,Meridian Assembly,Solaris Automotive,Export,12.7,18.7,47.4,model: series continues; level from post-switch months
+customer_switch,THM-017,Europe,2023-01,Solaris Automotive,Nexon Motor Group,Direct OEM,30.9,47.9,55.0,model: series continues; level from post-switch months
+customer_switch,THM-020,India,2025-01,Orion Driveline,Crestline Manufacturing,Export,84.2,63.4,-24.7,model: series continues; level from post-switch months
+customer_switch,THM-026,Latin America,2023-05,Vantara Auto,Quantum Drive Systems,Tier-1 Distributor,61.8,99.5,60.9,model: series continues; level from post-switch months
+customer_switch,THM-047,India,2025-01,Apex Tier One,Helios Auto Parts,Export,32.7,55.8,70.7,model: series continues; level from post-switch months
+lost_account,BSS-034,North America,2025-12,Solaris Automotive,,Direct OEM,69.6,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,BSS-082,India,2026-01,Quantum Drive Systems,,Export,95.1,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,CSS-045,India,2025-11,Vantara Auto,,Direct OEM,71.0,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,CSS-062,Asia Pacific,2025-10,Quantum Drive Systems,,Direct OEM,44.2,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,CSS-085,Europe,2025-12,Apex Tier One,,Tier-1 Distributor,59.8,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,ELA-040,North America,2025-08,Crestline Manufacturing,,Tier-1 Distributor,46.2,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,ELA-055,Latin America,2026-01,Orion Driveline,,Direct OEM,39.3,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,ELA-084,India,2025-11,Vantara Auto,,Tier-1 Distributor,29.8,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,HYD-061,Europe,2025-11,Nexon Motor Group,,Direct OEM,74.5,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,HYD-081,North America,2025-04,Quantum Drive Systems,,Aftermarket,77.8,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,PMP-022,India,2026-01,Helios Auto Parts,,Aftermarket,49.4,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,PMP-076,India,2025-11,Meridian Assembly,,Export,43.2,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,PTC-002,North America,2025-06,Quantum Drive Systems,,Tier-1 Distributor,110.8,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,PTC-003,Europe,2025-11,Solaris Automotive,,Direct OEM,114.2,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,PTC-038,North America,2025-11,Vantara Auto,,Aftermarket,48.0,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)
+lost_account,THM-015,North America,2025-07,Crestline Manufacturing,,Aftermarket,46.1,0.0,-100.0,forecast 0 unless orders resume (rows still present in test)

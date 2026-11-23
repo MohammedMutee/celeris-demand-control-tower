@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# raw competition data is not redistributed: place the files in student_data/
+student_data/
+*.pdf
+*.png
+# experiment scratch + logs
+data/*
+!data/clean/
+data/clean/_*
+outputs/*.log
+outputs/.forecast.pid

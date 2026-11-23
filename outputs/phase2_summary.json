@@ -1,0 +1,242 @@
+{
+  "run_id": "20261122-191359",
+  "unconstrained_demand_steps": [
+    {
+      "id": "UD-1",
+      "step": "stockout_listed",
+      "rows": 5830,
+      "method": "demand = Requested_Units"
+    },
+    {
+      "id": "UD-2",
+      "step": "backorder_catchup",
+      "rows": 1048,
+      "method": "demand = shipped - backorder carried in"
+    },
+    {
+      "id": "UD-3",
+      "step": "stockout_inferred_chip",
+      "rows": 1925,
+      "method": "estimator A_shipped_over_fillrate"
+    },
+    {
+      "id": "UD-4",
+      "step": "possible_unlisted_stockout_flagged",
+      "rows": 949,
+      "method": "dip<50% expected then >140% next month; NOT imputed (precision too low), weight 0.5"
+    },
+    {
+      "id": "UD-5",
+      "step": "data_loss_imputed",
+      "rows": 1309,
+      "method": "expected model; train_weight 0"
+    }
+  ],
+  "validation": {
+    "chip_estimator_wape": {
+      "A_shipped_over_fillrate": 0.11402637390672285,
+      "B_expected_x_index": 0.334093466816889,
+      "geo_mean_AB": 0.17636761179705332,
+      "n_validation_rows": 3635
+    },
+    "chip_estimator_used": "A_shipped_over_fillrate",
+    "unlisted_detector_sweep": [
+      {
+        "dip": 0.5,
+        "catchup": 1.2,
+        "recall_listed": 0.1939487975174554,
+        "false_flag_rate_normal": 0.00882187427587805,
+        "est_precision": 0.0652979672568741
+      },
+      {
+        "dip": 0.5,
+        "catchup": 1.3,
+        "recall_listed": 0.1613653995345229,
+        "false_flag_rate_normal": 0.00678054001566862,
+        "est_precision": 0.0703051000037332
+      },
+      {
+        "dip": 0.5,
+        "catchup": 1.4,
+        "recall_listed": 0.1256788207913111,
+        "false_flag_rate_normal": 0.004910236463747007,
+        "est_precision": 0.07521440013315916
+      },
+      {
+        "dip": 0.6,
+        "catchup": 1.2,
+        "recall_listed": 0.23584173778122575,
+        "false_flag_rate_normal": 0.018311320026040804,
+        "est_precision": 0.03931708644803028
+      },
+      {
+        "dip": 0.6,
+        "catchup": 1.3,
+        "recall_listed": 0.19705197827773469,
+        "false_flag_rate_normal": 0.013423152040782548,
+        "est_precision": 0.0445683112845986
+      },
+      {
+        "dip": 0.6,
+        "catchup": 1.4,
+        "recall_listed": 0.15360744763382467,
+        "false_flag_rate_normal": 0.009119798735476182,
+        "est_precision": 0.05080236315661709
+      },
+      {
+        "dip": 0.7,
+        "catchup": 1.2,
+        "recall_listed": 0.26066718386346005,
+        "false_flag_rate_normal": 0.03192205413397773,
+        "est_precision": 0.025291269752626713
+      },
+      {
+        "dip": 0.7,
+        "catchup": 1.3,
+        "recall_listed": 0.2195500387897595,
+        "false_flag_rate_normal": 0.021742968431041523,
+        "est_precision": 0.03108844956218873
+      },
+      {
+        "dip": 0.7,
+        "catchup": 1.4,
+        "recall_listed": 0.17145073700543056,
+        "false_flag_rate_normal": 0.013649353945292242,
+        "est_precision": 0.03838221170248907
+      }
+    ]
+  },
+  "totals": {
+    "shipped_units": 11724360.0,
+    "demand_units": 11892556.0,
+    "lost_units_est": 119182.0,
+    "lost_revenue_est_usd": 118852442.25
+  },
+  "register_counts": [
+    {
+      "classification": "error",
+      "type": "error:currency",
+      "n": 498
+    },
+    {
+      "classification": "error",
+      "type": "error:date_typo",
+      "n": 30
+    },
+    {
+      "classification": "error",
+      "type": "error:price_in_cents",
+      "n": 614
+    },
+    {
+      "classification": "error",
+      "type": "error:region_missing",
+      "n": 942
+    },
+    {
+      "classification": "error",
+      "type": "error:revenue_x10",
+      "n": 425
+    },
+    {
+      "classification": "error",
+      "type": "error:row_missing",
+      "n": 956
+    },
+    {
+      "classification": "error",
+      "type": "error:sign_flip",
+      "n": 491
+    },
+    {
+      "classification": "error",
+      "type": "error:unit_of_measure",
+      "n": 385
+    },
+    {
+      "classification": "error",
+      "type": "error:units_missing",
+      "n": 380
+    },
+    {
+      "classification": "error",
+      "type": "error:units_revenue_conflict",
+      "n": 7
+    },
+    {
+      "classification": "error",
+      "type": "error:units_x10",
+      "n": 284
+    },
+    {
+      "classification": "error",
+      "type": "error:units_x100",
+      "n": 74
+    },
+    {
+      "classification": "real_event",
+      "type": "cycle:missed_order",
+      "n": 85
+    },
+    {
+      "classification": "real_event",
+      "type": "cycle:off_cycle_order",
+      "n": 180
+    },
+    {
+      "classification": "real_event",
+      "type": "dip:event",
+      "n": 1505
+    },
+    {
+      "classification": "real_event",
+      "type": "spike:event",
+      "n": 35
+    },
+    {
+      "classification": "real_level_shift",
+      "type": "spike:sustained",
+      "n": 17
+    },
+    {
+      "classification": "real_one_off",
+      "type": "spike:one_off_order",
+      "n": 319
+    },
+    {
+      "classification": "real_supply",
+      "type": "stockout:catch_up",
+      "n": 1048
+    },
+    {
+      "classification": "real_supply",
+      "type": "stockout:inferred_chip",
+      "n": 1925
+    },
+    {
+      "classification": "real_supply",
+      "type": "stockout:listed",
+      "n": 5830
+    },
+    {
+      "classification": "real_supply_uncertain",
+      "type": "stockout:possible",
+      "n": 949
+    },
+    {
+      "classification": "real_unexplained",
+      "type": "dip:unexplained",
+      "n": 645
+    }
+  ],
+  "cycles": {
+    "monthly": 1541,
+    "monthly, 1 skip/yr": 757,
+    "every 2nd month": 296,
+    "quarterly": 242,
+    "2 of 3 months": 229,
+    "no orders": 16,
+    "5 of 6 months": 2
+  },
+  "cycle_changes": 49
+}

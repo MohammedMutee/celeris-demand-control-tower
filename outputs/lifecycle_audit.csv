@@ -1,0 +1,8 @@
+sku,action,rows,predecessor,base_per_region,rundown_rows
+PMP-020,launch_handover_curve,48,PMP-003,49.3,
+PTC-029,launch_handover_curve,45,PTC-005,54.7,
+THM-012,launch_handover_curve,24,THM-001,61.7,
+PMP-003,eol_zero_after,54,,,18.0
+PTC-005,eol_zero_after,72,,,18.0
+THM-001,eol_zero_after,30,,,18.0
+(16 series),lost_account_zero,304,,,

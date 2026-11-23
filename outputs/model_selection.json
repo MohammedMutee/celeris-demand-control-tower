@@ -1,0 +1,47 @@
+{
+  "train_start": "2020-06",
+  "rounds": 1200,
+  "structural_weight": 0.1,
+  "ensemble": [
+    {
+      "name": "gbm_tweedie",
+      "start": "2021-01",
+      "rounds": 1100,
+      "drop": [],
+      "params": {
+        "objective": "tweedie",
+        "tweedie_variance_power": 1.398,
+        "num_leaves": 255,
+        "min_data_in_leaf": 100,
+        "feature_fraction": 0.518,
+        "lambda_l2": 7.43,
+        "learning_rate": 0.03
+      },
+      "weight": 0.5
+    },
+    {
+      "name": "gbm_l1",
+      "start": "2021-01",
+      "rounds": 1200,
+      "drop": [],
+      "params": {
+        "objective": "l1",
+        "learning_rate": 0.03
+      },
+      "weight": 0.5
+    }
+  ],
+  "backtest_mean_wape": 0.28282378013686416,
+  "ladder": {
+    "snaive": 0.3684748802000798,
+    "ma12": 0.5032260712390132,
+    "croston": 0.5030589041514696,
+    "sba": 0.503577797762566,
+    "tsb": 0.502002553142224,
+    "structural": 0.30722077921121,
+    "gbm_tweedie": 0.2850341774695809,
+    "gbm_l1": 0.28437701953476097,
+    "gbm_huber": 0.2873933527777996,
+    "ensemble": 0.28282378013686416
+  }
+}

@@ -1,0 +1,3 @@
+sku,conflict,master_value,transaction_value,resolution
+PMP-004,business_unit,Power & Drive Systems,Advanced Manufacturing,Trust transactions + family->BU rule; master entry is wrong
+BSS-018,sales_before_launch,2025-06,2025-02,"Sales are real (all regions, normal levels); master Launch_Date too late"
