@@ -1,6 +1,5 @@
-# 15 - Phase 3: Features & Drivers
+# Features and Macro Drivers
 
-Back: [[00 - START HERE]] · Plan: [[05 - Features & Drivers Plan]] · Architecture: [[14 - Model Architecture Decision]]
 Date: 2026-11-23 · Code: `src/celeris/features/macro_leadlag.py`, `src/celeris/model/panel.py` · Stage: `make data` (drivers)
 
 ## Macro lead/lag study
@@ -16,9 +15,9 @@ Outputs: `outputs/macro_ccf.csv` (every family × indicator × lag), `macro_lead
 | **Industrial capacity utilisation** | Moves **at the same time** (r 0.63–0.76). After 2022 the best lag is **2 months**, matching "orders booked 2–3 months before delivery" | Strongest single relationship |
 | New vehicle orders | Same month (r ~0.45–0.52), lag unstable after 2022 | — |
 | Raw material cost | r ~+0.4 at lag 12, stable | Mechanism unclear (likely a base effect from the 2021 cycle). Reported, not over-interpreted |
-| EV adoption index | **No family-level effect**. It shifts the *mix* within families (EV vs ICE SKUs), see [[13 - Phase 2 Anomaly Findings]] | Granger p 0.66–0.89 |
+| EV adoption index | **No family-level effect**. It shifts the *mix* within families (EV vs ICE SKUs), see [Anomalies, Ordering Cycles and Unconstrained Demand](04-anomalies-and-unconstrained-demand.md) | Granger p 0.66–0.89 |
 
-### Is the lag structure stable? (Expert question)
+### Is the lag structure stable?
 **Only partly.**
 - In rolling 36-month windows the best lag moves by 2–4 months (lag std: PMI 2.1, util 2.6, orders 3.8).
 - Of 56 family × indicator pairs, 48 are significant over the full period, but only **16 are stable** (same sign, lag within ±2, significant both before and after 2022).

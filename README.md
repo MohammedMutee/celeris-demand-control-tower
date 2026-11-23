@@ -3,7 +3,8 @@
 Forecast of unconstrained monthly demand for every SKU × region in `test.csv` (2026-11 → 2028-05), built on a
 cleaned, stockout-corrected history, plus a Streamlit control tower for planners and managers.
 
-**Live dashboard:** _link added after deployment_
+**Live dashboard:** https://celeris-demand-control-tower.streamlit.app/  
+**Documentation:** [`docs/`](docs/README.md)
 
 ## Repository contents
 | Path | What |
@@ -12,8 +13,24 @@ cleaned, stockout-corrected history, plus a Streamlit control tower for planners
 | `src/celeris/` | Pipeline: cleaning, anomalies, drivers, models, backtest, forecast |
 | `app/` | Streamlit control tower (12 pages + home) |
 | `outputs/`, `data/clean/` | Pipeline outputs the dashboard reads (committed so the app runs without re-running the pipeline) |
-| `docs/` | Full write-up: problem understanding, data findings, every cleaning rule, anomaly findings, model architecture, results, presentation notes. Start at `docs/00 - START HERE.md` |
+| `docs/` | Write-up: problem understanding, data profile, every cleaning rule, anomaly findings, model architecture, drivers, results, dashboard. Start at [`docs/README.md`](docs/README.md) |
 | `tests/` | 108 tests (normalisers, cycle detection, output invariants, submission validity, every dashboard page) |
+
+## Instructions to run
+
+**Option 1 – live dashboard (no setup):** open https://celeris-demand-control-tower.streamlit.app/ . Sidebar filters (family, SKU, region, channel, customer) apply across all pages.
+
+**Option 2 – dashboard locally (~2 min):**
+```bash
+git clone https://github.com/MohammedMutee/celeris-demand-control-tower.git
+cd celeris-demand-control-tower
+python3 -m venv .venv && source .venv/bin/activate      # Python 3.12
+pip install -r requirements.txt
+streamlit run app/Home.py                               # http://localhost:8501
+```
+The forecast is `outputs/submission.csv` (58,219 rows).
+
+**Option 3 – reproduce everything from the raw data:** see Setup and Run below.
 
 ## Setup
 ```bash

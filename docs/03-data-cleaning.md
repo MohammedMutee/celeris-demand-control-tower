@@ -1,16 +1,9 @@
-# 12 - Phase 0–1: Build Log & Cleaning Findings
+# Data Cleaning: Rules, Evidence and Validation
 
-Back: [[00 - START HERE]] · Plan: [[03 - Cleaning Plan]] · Next: [[13 - Phase 2 Anomaly Findings]]
 Date: 2026-11-22
 
-## Phase 0: Setup (done)
-- `.venv` created with `--system-site-packages`. **The disk is 99% full (2.4 GB free)**, so we reuse the system pandas, numpy, sklearn, pyarrow, scipy, rapidfuzz and streamlit and install only `statsmodels`, `ruptures` and `pytest` (94 MB).
-- LightGBM, plotly etc. will be installed when Phase 4–7 needs them. Watch disk space.
-- Repo: `src/celeris/{config,dq,pipeline}.py`, `src/celeris/clean/{normalize,sales,reference}.py`, `tests/`, `Makefile`, `.gitignore`. `git init` done (no commits yet).
-- Commands: `make pipeline` (all stages), `make clean-stage`, `make test`.
-
-## Phase 1: Cleaning (done, Expert tier)
-**Result:** `make clean-stage` runs in ~12 s. **63/63 tests pass.** 43 DQ rules triggered and logged.
+## Summary
+**Result:** the cleaning stage (`make data`) runs in ~12 s; 43 DQ rules triggered and logged; output invariants are covered by `tests/test_clean_outputs.py`.
 
 ### Outputs
 | File | What |
@@ -65,17 +58,17 @@ Each was **diagnosed with evidence before fixing**. Nothing is a blind rule.
 | DQ-131 | Stockouts: Fill_Rate_Pct only approximate | 1,725 >2pp off | Recomputed |
 | DQ-120 | Events: open-ended (Helios India capacity) | 1 | Extended to end of forecast window |
 
-### Validation that the fixes are right (a presentation point)
+### Validation that the fixes are right
 The stockout file's `Shipped_Units` is a **second, independent source** for Units_Sold:
 - raw train matches it in **5,652 / 5,830** rows (96.9%)
 - **cleaned train matches in 5,829 / 5,830 (99.98%)**
 
 Every mismatch in the raw data was one of our diagnosed error types (sign flips, ×100 units, India packs). That's strong evidence the cleaning is correct, not just plausible.
 
-### Things worth remembering
+### Other observations
 - **Price 0 is the convention on no-order rows** (35k rows with units 0 have price 0). Not an error; normalised to the canonical price.
 - The **2022-H2 6% surcharge is real** (event EV-026) and is modelled as its own price period.
-- **52 rows at ~10× normal with consistent revenue are real bulk orders**, not errors. They go to the anomaly register (Phase 2).
+- **52 rows at ~10× normal with consistent revenue are real bulk orders**, not errors. They go to the [anomaly register](04-anomalies-and-unconstrained-demand.md).
 - Raw "gap months" looked like 14.7k before date fixing. The 2062-typo rows stretched series spans to 2062. After fixing, only 930 real gaps remain. Order of operations matters.
 - Ordering cycles show up as **explicit zero rows** (e.g. a series with a zero every 3rd month), while missing rows are random data loss. This is how we separate "not ordered" from "data loss".
 - **Test contains 156 rows after EOL** (PTC-005, PMP-003, THM-001) → must be forecast 0 (rule 5).

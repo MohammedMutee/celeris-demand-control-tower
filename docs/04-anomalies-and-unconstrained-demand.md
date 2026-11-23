@@ -1,18 +1,6 @@
-# 13 - Phase 2: Anomalies, Ordering Cycles & Unconstrained Demand
+# Anomalies, Ordering Cycles and Unconstrained Demand
 
-Back: [[00 - START HERE]] · Plan: [[04 - Anomaly & Unconstrained Demand Plan]] · Previous: [[12 - Phase 0-1 Build Log & Cleaning Findings]]
-Date: 2026-11-22 · Status: **done** · `make pipeline` (clean + anomalies) ≈ 40 s · **74/74 tests pass**
-
-## Code
-`src/celeris/anomalies/`
-| Module | Does |
-|---|---|
-| `cycles.py` | Ordering-cycle detection + cycle-change segmentation (penalised binary segmentation, O(1) costs) |
-| `demand.py` | Seasonal index, expected-demand model, **unconstrained demand** (5 steps), validation |
-| `events.py` | Effect of every calendar event (DiD / YoY / step / ramp / data-loss), holiday regressions, pre-buy |
-| `structure.py` | Customer switches, lost accounts, structural breaks (PELT), EV shift |
-| `detect.py` | Outlier detection + **anomaly register** (errors *and* real events, with reason + action) |
-| `run.py` | Stage runner → `make anomalies` |
+Date: 2026-11-22 · Stage: `make data` (≈1 min)
 
 ## Code
 
@@ -25,7 +13,7 @@ Date: 2026-11-22 · Status: **done** · `make pipeline` (clean + anomalies) ≈ 
 | `events.py`    | Impact analysis of every calendar event (DiD, YoY, step, ramp, and data loss), holiday regressions, and pre-buy effects.  |
 | `structure.py` | Customer switches, lost accounts, structural-break detection (PELT), and EV demand shifts.                                |
 | `detect.py`    | Outlier detection and **anomaly register** covering both errors and genuine events, with reasons and recommended actions. |
-| `run.py`       | Pipeline stage runner, exposed through `make anomalies`.                                                                  |
+| `run.py`       | Pipeline stage runner, run by `make data`.                                                                  |
 
 ## Outputs
 | File | Content |
@@ -86,7 +74,7 @@ Zero months are **not random**: each customer orders on a fixed pattern.
 | B: expected level × family demand index | 33.4% |
 | geometric mean | 17.6% |
 
-**Why we don't impute isolated unlisted stockouts:** shipment noise is large (normal-month shipped/expected: p5 = 0.51, p95 = 1.76). A threshold sweep on the listed stockouts gives at best ~**7.5% precision** (recall 13% at a 0.5% false-flag rate). Imputing would add more error than it removes, so those months are flagged and down-weighted instead. *Knowing when not to correct is part of the grade.*
+**Why we don't impute isolated unlisted stockouts:** shipment noise is large (normal-month shipped/expected: p5 = 0.51, p95 = 1.76). A threshold sweep on the listed stockouts gives at best ~**7.5% precision** (recall 13% at a 0.5% false-flag rate). Imputing would add more error than it removes, so those months are flagged and down-weighted instead.
 
 **Totals:** shipped 11.72M units → unconstrained demand 11.89M. **Estimated lost sales: 119k units ≈ $119M**, of which **$93M is Electrical Assemblies** (semiconductor). Lost units by reason: semiconductor 55k listed + 24k inferred; logistics 11k; capacity 10k; supplier quality 10k; tooling 10k.
 
@@ -126,7 +114,7 @@ Measured with methods matched to the event type: difference-in-differences vs a 
 - **16 lost accounts:** series that stopped ordering in 2025-04→2026-01 (e.g. PTC-003 Europe, Solaris, was 114 units/month) **but still have rows in test** → forecast ~0 unless orders resume.
 - Test customers = last train customer for every series (no switches announced in the forecast window).
 - 25 train series are absent from test, all of them discontinued SKUs → consistent with rule 5.
-- Master conflicts (Phase 1): PMP-004 BU wrong in master; BSS-018 sells 4 months before its master Launch_Date.
+- Master conflicts (see [Data Cleaning](03-data-cleaning.md)): PMP-004 BU wrong in master; BSS-018 sells 4 months before its master Launch_Date.
 - Structural breaks (PELT): dominated by COVID (2020-04 drop, 2020-07/10 recovery) and the MEA ramp. Smaller steps: ELA +18% (2024-02), Hydraulics +23% (2024-06), Export +21% (2023-01).
 
 ## Finding 5: The EV shift
@@ -136,7 +124,7 @@ Measured with methods matched to the event type: difference-in-differences vs a 
 | 2022 | 3.1% | 18.4% | 78.5% | 68.9 |
 | 2024 | 9.2% | 13.9% | 76.9% | 88.7 |
 | 2026 | 9.9% | 13.0% | 77.2% | 91.1 |
-- Share elasticity to the EV index: **EV +4.3, ICE −1.2, Universal 0**. The EV index flattens in 2024–26 and so does the EV share. Phase 3 should check the EV index path in the forecast window to decide whether ICE keeps declining.
+- Share elasticity to the EV index: **EV +4.3, ICE −1.2, Universal 0**. The EV index flattens in 2024–26 and so does the EV share. In the forecast window the EV index stays at ~92–94, so the model carries the current mix forward rather than extrapolating further ICE decline.
 
 ## Anomaly register: composition (17,624 entries)
 | Classification | n | Action |
@@ -149,7 +137,7 @@ Measured with methods matched to the event type: difference-in-differences vs a 
 | `real_one_off` **bulk orders** (isolated, ≥2.5× expected, median 5.3×, revenue consistent) | ~326 | exclude from training, keep in history view |
 | `real_level_shift` | ~19 | model |
 
-## Implications for Phase 3–6 (forecasting)
+## Implications for forecasting
 1. **Use `test_cycles.parquet`:** forecast = monthly rate × months covered × order_expected. Zero months in test are predictable.
 2. Target = `demand`, sample weight = `train_weight`.
 3. Features: holiday fractions (LNY −71%/month, Ramadan −28%), NA July / EU August (+ NA August catch-up), Helios step, MEA age, EV × powertrain.

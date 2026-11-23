@@ -1,6 +1,5 @@
-# 14 - Model Architecture Decision
+# Model Architecture
 
-Back: [[00 - START HERE]] · Plan: [[06 - Modeling & Validation Plan]] · Evidence: [[13 - Phase 2 Anomaly Findings]]
 Date: 2026-11-23
 
 ## What the literature says (and why it applies here)
@@ -43,7 +42,7 @@ forecast = pred × scale × months_covered × order_expected
 | **M1** | **Global LightGBM, direct multi-horizon, on scaled rate** | Main model |
 | E | Ensemble of M1 variants (+ S2), weights learned on backtest | Final point forecast if it wins |
 
-### Post-processing layers (Expert)
+### Post-processing layers
 1. Lifecycle: zero after EOL / before launch; lost accounts → 0; **launches via the handover curve learned from the 6 historical Replaces_SKU transitions**.
 2. Forecast-window events not learnable from features (Orion NA shutdown) → explicit adjustment estimated from analogues.
 3. P10/P50/P90 from calibrated backtest residual quantiles.

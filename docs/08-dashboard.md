@@ -1,6 +1,5 @@
-# 17 - Phase 7: Planning Control Tower (dashboard)
+# Planning Control Tower (Dashboard)
 
-Back: [[00 - START HERE]] · Plan: [[07 - Dashboard Plan]]
 Date: 2026-11-23 · Code: `app/` (Streamlit + Plotly) · Run: `make dashboard` → http://localhost:8501
 
 ## Requirements → what we built
@@ -13,7 +12,7 @@ Date: 2026-11-23 · Code: `app/` (Streamlit + Plotly) · Run: `make dashboard` �
 | Unconstrained demand shown in history | ✅ shipped vs demand on every timeline |
 | P10/P50/P90 | ✅ with **calibrated aggregation** of intervals for any filter |
 
-## Pages (5 required + all 7 optional = Expert tier)
+## Pages (5 required + all 7 optional)
 | # | Page | Highlights |
 |---|---|---|
 | 1 | **Executive overview** (both) | KPI tiles (19-mo units with P10–P90, revenue, next-12 vs last-12), units/revenue timeline, mix by family/region/channel per year incl. forecast years, headline table vs run rate |
@@ -31,8 +30,6 @@ Date: 2026-11-23 · Code: `app/` (Streamlit + Plotly) · Run: `make dashboard` �
 
 ## Quality checks
 - `tests/test_dashboard.py` runs **every page headless (Streamlit AppTest)**, with and without filters → 26/26 pass. These tests already caught one real bug (a categorical-dtype division on the overview page).
-- Fixed: Streamlit is installed system-wide, so `make dashboard` uses `python -m streamlit`.
-- **Not yet done:** a visual review in the browser (the Chrome extension wasn't connected) and deployment.
 
-## Deployment (open decision)
-Streamlit Community Cloud needs a **public GitHub repo** (code + `outputs/` ≈ 30 MB + `data/clean/` ≈ 15 MB). Needs the user's decision: see [[10 - Risks & Open Questions]].
+## Deployment
+Live on Streamlit Community Cloud: https://celeris-demand-control-tower.streamlit.app/ (reads the committed `outputs/` and `data/clean/`).

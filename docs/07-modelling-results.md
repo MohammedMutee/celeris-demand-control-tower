@@ -1,6 +1,5 @@
-# 16 - Phase 4–6: Modelling, Validation & Final Forecast
+# Modelling, Validation and Final Forecast
 
-Back: [[00 - START HERE]] · Architecture: [[14 - Model Architecture Decision]] · Features: [[15 - Phase 3 Features & Drivers]]
 Date: 2026-11-23 · Code: `src/celeris/model/` · Stages: `make model` (≈33 min), `make forecast` (≈10 min)
 
 ## Validation design
@@ -26,7 +25,7 @@ Croston / SBA / TSB ≈ 50% WAPE. They spread every order evenly and ignore the 
 → macro features help (0.7–1.5 pp). Starting in 2021 helps L1 (less COVID distortion).
 
 ### 3. Hyperparameter search (Optuna TPE, 14 trials, 2 folds, `outputs/tuning.json`)
-Best (Tweedie, power 1.40, 255 leaves, min_data 100, feature_fraction 0.52, λ2 7.4) **28.61% vs 28.78% default**. Only 0.17 pp, so **capacity isn't the bottleneck; series noise is**. Good to say in the presentation: we tuned, and it showed the model was already near the data's limit.
+Best (Tweedie, power 1.40, 255 leaves, min_data 100, feature_fraction 0.52, λ2 7.4) **28.61% vs 28.78% default**. Only 0.17 pp, so **capacity isn't the bottleneck; series noise is**.
 
 ### 4. Final 7-fold backtest + ensemble weights (`outputs/model_selection.json`)
 | Model | Mean WAPE (7 folds) |
@@ -74,7 +73,7 @@ Coherence is by construction (bottom-up). A separate reconciliation step wasn't 
 - **Calibrated on folds 1–4, validated on folds 5–7: 84.0% coverage** (target 80%; 10.9% below P10, 5.2% above P90). Slightly conservative → safe for procurement.
 - Aggregating intervals in the dashboard: half-width = (1−λ)·√Σd² + λ·Σd, with λ calibrated so family × month aggregates hit 80% coverage in the backtest. (Summing P90s would overstate risk, and √Σd² alone would understate it.)
 
-## Expert layers in the final forecast
+## Additional layers in the final forecast
 | Layer | What | Evidence |
 |---|---|---|
 | **Launches** (PTC-029, PMP-020, THM-012) | Successor = handover curve × predecessor's per-region base. Curve: 10% → 33% → 52% → 61% → 88% → 98% plateau by month 7 | Learned from 6 historical transitions; leave-one-out WAPE 19–68% (tiny sample → wide band P10 = 0.5×, P90 = 1.6×) |
@@ -94,8 +93,3 @@ Coherence is by construction (bottom-up). A separate reconciliation step wasn't 
 - Top features (gain share, averaged over the ensemble): same month 2 years ago (8%), seasonal index (8%), volume level (6%), family, customer, YoY growth, series age, powertrain, months since launch, 24-month mean.
 - What-if (model re-run on a shifted macro path): **PMI −3 → −2.6%**, PMI +3 → +2.7%, capacity utilisation −3 pts → −0.9%, vehicle inventory +10 days → −0.9%.
 - **Caveat:** EV index +10 → +2.9% total. The EV index trends with time, so the model partly reads it as growth. Flagged on the page; the reliable EV effect is the mix shift.
-
-## Engineering notes / lessons
-- Two background wait loops hung because `pgrep -f pattern` matched its own command line. Wait on PIDs or log markers instead.
-- SHAP for all 58k rows on a 255-leaf model was far too slow (>20 min). Now the models are saved and the dashboard explains the selected series on demand (instant).
-- `CELERIS_REUSE_MODELS=1 make forecast` re-runs post-processing without retraining (~30 s).

@@ -1,7 +1,7 @@
 """Clean train.csv / test.csv into one row per Date-SKU-Region.
 
 Each rule is logged to the DQ log (rule ids DQ-0xx). The diagnosis behind
-every rule is documented in the Obsidian note "12 - Phase 1 Cleaning Findings".
+every rule is documented in docs/03-data-cleaning.md.
 """
 from __future__ import annotations
 

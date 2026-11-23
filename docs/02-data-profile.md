@@ -1,6 +1,4 @@
-# 02 - Data Findings (initial profile)
-
-Back: [[00 - START HERE]] · Verified by running pandas on 2026-11-22. Deeper profiling happens in Phase 1.
+# Data Profile (raw files)
 
 ## File sizes
 | File | Rows | Notes |
@@ -74,7 +72,7 @@ Back: [[00 - START HERE]] · Verified by running pandas on 2026-11-22. Deeper pr
 | **PMP-020** | PMP-003 (EOL **2027-08**) | **2027-06** | Planned Launch |
 | **THM-012** | THM-001 (EOL **2027-12**) | **2027-10** | Planned Launch |
 
-  The 6 historical transitions are **training data for how a cannibalising handover ramps**: overlap months, ramp-up curve, total-volume transfer ratio. We apply that learned curve to the 3 future transitions. This is a strong Expert-tier story.
+  The 6 historical transitions are **training data for how a cannibalising handover ramps**: overlap months, ramp-up curve, total-volume transfer ratio. We apply that learned curve to the 3 future transitions.
 - Need to cross-check master vs transactions: sales before launch / after EOL, family/BU mismatches, description mismatches.
 
 ## events_calendar.csv: what matters
@@ -101,7 +99,3 @@ Back: [[00 - START HERE]] · Verified by running pandas on 2026-11-22. Deeper pr
 - 5,830 rows. Reasons: Semiconductor allocation 4,314, Logistics delay 391, Supplier quality hold 381, Capacity constraint 377, Tooling breakdown 367.
 - Gives `Requested_Units` (true demand), `Carried_In_Units`, `Shipped_Units` (should equal train Units_Sold: **a reconciliation check**), `Backordered_Units`, `Lost_Units`.
 - "Known to be incomplete": we must detect unlisted stockout months (e.g. other Electrical Assemblies series during 2021-03→2022-09).
-
-## Environment
-- Python 3.12.3, pandas 2.2.3, numpy 2.1.1, sklearn 1.9.0. **lightgbm not installed** (also need catboost / statsforecast / plotly / streamlit).
-- 8 cores, 15 GB RAM, but only ~2–3 GB free at profiling time, so be memory-conscious (use categoricals and float32).

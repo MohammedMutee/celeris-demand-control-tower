@@ -6,7 +6,7 @@ Everything a fold uses is derived from data <= its origin O:
   * the family x region seasonal index;
   * all lag / rolling features.
 
-Model target (see Obsidian note 14):
+Model target (see docs/05-model-architecture.md):
     y = rate(t) / scale(o)        rate = demand / months_covered on order months
     units forecast = y_hat * scale(o) * months_covered(t) * order_expected(t)
 """
