@@ -54,6 +54,16 @@ def run_folds(finalists: list[dict], train_start: str, origins=FULL_ORIGINS + PA
     return pd.concat(frames, ignore_index=True)
 
 
+def _compact(df: pd.DataFrame) -> pd.DataFrame:
+    """float32 + categoricals: the backtest file stays small enough to ship with the dashboard."""
+    df = df.copy()
+    f = df.select_dtypes("float64").columns
+    df[f] = df[f].astype("float32")
+    for c in ["origin", "date", "sku", "region", "family", "channel", "customer"]:
+        df[c] = df[c].astype("category")
+    return df
+
+
 def wape(df, col):
     return (df[col] - df["actual"]).abs().sum() / df["actual"].sum()
 
@@ -124,7 +134,8 @@ def run_selection(finalists: list[dict], train_start: str):
     edges_all.to_csv(C.OUT / "quantile_vol_edges.csv")
     full = apply_quantiles(bt, "ensemble", q_all, edges_all)
     full[["origin", "date", "h", "sku", "region", "family", "channel", "customer", "actual"] + models +
-         ["p10", "p90"]].to_parquet(C.OUT / "backtest_long.parquet", index=False)
+         ["p10", "p90"]].pipe(_compact).to_parquet(C.OUT / "backtest_long.parquet", index=False,
+                                                    compression="zstd", compression_level=19)
     (C.OUT / "quantile_coverage.json").write_text(json.dumps({"validated_on_folds": sorted(bt.loc[~early, "origin"].unique().tolist()),
                                                               **cov}, indent=2))
     sel = dict(train_start=train_start, rounds=ROUNDS, structural_weight=sw,

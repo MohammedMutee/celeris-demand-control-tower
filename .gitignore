@@ -12,3 +12,4 @@ data/*
 data/clean/_*
 outputs/*.log
 outputs/.forecast.pid
+*.zip
